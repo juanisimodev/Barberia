@@ -1,16 +1,16 @@
 # Sistema de Gestión de Citas - Barbería [Nombre del Negocio]
 
-¡Bienvenido al repositorio central del proyecto! Este sistema web está diseñado para automatizar la reserva de citas, optimizar la agenda del barbero y mejorar la retención de clientes mediante recordatorios automatizados.
+¡Bienvenido al repositorio central del proyecto! Este sistema web está diseñado para automatizar la reserva de citas, optimizar la agenda de los barberos y mejorar la retención de clientes mediante recordatorios automatizados.
 
 ---
 
 ## 📋 Resumen del Proyecto
 
-El cliente necesita una plataforma web donde sus usuarios puedan agendar servicios de barbería de forma autónoma. El sistema debe confirmar la cita, procesar el pago (opcional/obligatorio según se defina) y enviar alertas para reducir el ausentismo.
+El cliente necesita una plataforma web donde sus usuarios puedan consultar el catálogo de servicios, conocer las redes sociales del negocio y agendar citas de forma autónoma con el barbero de su elección. El sistema debe controlar estrictamente la disponibilidad y la identidad de los usuarios para evitar duplicidades en la agenda.
 
 ### 👥 Actores del Sistema
-* **Cliente de la Barbería:** Puede ver servicios disponibles, barberos, horarios libres, agendar y pagar.
-* **Administrador (Dueño/Barberos):** Puede gestionar su agenda, ver las citas del día, bloquear horarios y revisar ingresos.
+* **Cliente de la Barbería:** Puede explorar la web, ver servicios, seleccionar su barbero preferido, registrarse/identificarse y agendar de forma única.
+* **Administrador (Dueño / 5 Barberos):** Cada uno de los 5 barberos (o el administrador general) debe poder visualizar y gestionar su propia agenda de citas del día.
 
 ---
 
@@ -18,29 +18,30 @@ El cliente necesita una plataforma web donde sus usuarios puedan agendar servici
 
 Para abordar el desarrollo de manera ordenada, el proyecto se dividirá en los siguientes módulos:
 
-### 1. Interfaz Web (Frontend)
-* Catálogo de servicios (Corte de pelo, barba, combos) con precios y duración.
-* Selector de fecha y hora disponible en tiempo real.
-* Selector de barbero (si hay más de uno).
-* Panel de administración simple para el dueño.
+### 1. Interfaz Web (Frontend - Página Web y Catálogo)
+* **Página de Inicio (Landing Page):** Presentación de la barbería, enlaces directos a sus redes sociales oficiales e información de contacto.
+* **Catálogo de Servicios:** Módulo dinámico que muestra los servicios disponibles (Cortes, barba, combos) con su respectivo precio y duración estimada.
+* **Módulo de Agendamiento:** Flujo intuitivo para seleccionar servicio -> seleccionar 1 de los 5 barberos -> seleccionar fecha y hora disponible.
 
-### 2. Motor de Reservas y Lógica (Backend)
-* Control de disponibilidad (evitar que dos personas reserven a la misma hora).
-* Registro de clientes básico (Nombre, Teléfono, Correo).
+### 2. Motor de Reservas y Reglas de Negocio (Backend)
+* **Validación de Identidad Única:** El sistema obligará al cliente a registrarse/ingresar con su correo electrónico y número de celular. El backend validará que el correo sea único en la base de datos para evitar usuarios duplicados.
+* **Control de Citas en Tiempo Real:** Bloqueo inmediato de horarios por barbero para evitar duplicidades.
+* **Margen de Reserva en el Mismo Día:** Se permiten reservas para la fecha en curso siempre y cuando existan al menos **2 horas de anticipación** entre la hora actual y la hora del servicio solicitado.
 
 ### 3. Integraciones Clave (Fase Avanzada)
-* **Google Calendar API:** Sincronización automática. Cuando un cliente agenda, se crea el evento en el calendario del barbero.
-* **Notificaciones:**
-  * **Correo:** Confirmación inicial y recordatorio 24 horas antes.
-  * **WhatsApp:** Mensaje automatizado de recordatorio (puede evaluarse mediante la API oficial de Cloud API de Meta o servicios de terceros como Twilio).
-* **Pasarela de Pagos:** Integración para recibir pagos con tarjetas de débito/crédito.
+* **Google Calendar API:** Sincronización automática con los calendarios de los barberos al confirmar una cita.
+* **Notificaciones Automatizadas:**
+  * **Correo:** Confirmación de registro/cita y recordatorio.
+  * **WhatsApp:** Recordatorio automatizado al número celular registrado para mitigar el ausentismo.
+  * **Recordatorios de Control:** Alertas automatizadas enviadas con un tiempo prudente antes de la cita (ej. 24 horas para citas agendadas con días de anticipación, o confirmación exprés si se agenda para el mismo día).
+* **Pasarela de Pagos:** Integración para habilitar el pago de la reserva o servicio en línea.
 
 ---
 
 ## 🚀 Plan de Trabajo Propuesto (Hitos)
 
-* [ ] **Fase 1:** Diseño de Base de Datos y Maquetación Web (Vistas de reserva).
-* [ ] **Fase 2:** Lógica de agendamiento y panel de administración (Funcionalidad base).
-* [ ] **Fase 3:** Integración de Google Calendar y correos.
-* [ ] **Fase 4:** Integración de Pasarela de Pagos y alertas de WhatsApp.
-* [ ] **Fase 5:** Pruebas y Despliegue en producción.
+* [ ] **Fase 1:** Maquetación Web (Landing page, catálogo de servicios, enlaces a redes sociales y flujos de reserva).
+* [ ] **Fase 2:** Diseño de Base de Datos y Backend (Modelado de Barberos, Servicios, Clientes con restricción de correo único, y lógica de disponibilidad en tiempo real).
+* [ ] **Fase 3:** Integración de Google Calendar y correos de confirmación.
+* [ ] **Fase 4:** Integración de Pasarela de Pagos y alertas automatizadas de WhatsApp.
+* [ ] **Fase 5:** Pruebas de concurrencia (asegurar que no se dupliquen citas) y Despliegue.
